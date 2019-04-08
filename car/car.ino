@@ -28,9 +28,9 @@ void timerInterrupt(){
     float speed_right = encoder1.getSpeed(dT);
     float speed_left = encoder2.getSpeed(dT);
     
-    Serial.print(speed_right);Serial.print("\t");
-    Serial.print(speed_left);Serial.print("\t");
-    Serial.println();
+    //Serial.print(speed_right);Serial.print("\t");
+    //Serial.print(speed_left);Serial.print("\t");
+    //Serial.println();
 }
 
 void encoder1Interrupt(){
@@ -54,6 +54,7 @@ void setup(){
 }
 
 void loop(){
-    updateBT();
+
+    //updateBT();
     //getOrientation();
 }
