@@ -34,11 +34,10 @@ void setupMPU6050()
     timer = micros();
 }
 
-void getRoll()
+double getPhi()
 {
     /* Update all the values */
-    while (i2cRead(0x3B, i2cData, 14))
-        ;
+    while (i2cRead(0x3B, i2cData, 14));
     accX = ((i2cData[0] << 8) | i2cData[1]);
     accY = ((i2cData[2] << 8) | i2cData[3]);
     accZ = ((i2cData[4] << 8) | i2cData[5]);
@@ -64,11 +63,8 @@ void getRoll()
     if (gyroXangle < -180 || gyroXangle > 180)
         gyroXangle = kalAngleX;
 
-
-
     // Serial.print(roll); Serial.print("\t");
     //Serial.print(gyroXangle); Serial.print("\t");
     //Serial.print(compAngleX); Serial.print("\t");
-    Serial.println(kalAngleX);
-    BT.println(kalAngleX);
+    return kalAngleX;
 }

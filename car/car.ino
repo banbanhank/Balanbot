@@ -44,7 +44,11 @@ void timerInterrupt(){
     sei();
     float speed_right = encoder1.getSpeed(dT);
     float speed_left = encoder2.getSpeed(dT);
-    getRoll();
+    double phi = getPhi();
+    Serial.println(phi);
+    Serial.println(speed_right);
+    BT.println(phi);
+    BT.println(speed_right);
     //Serial.print(speed_right);Serial.print("\t");
     //Serial.print(speed_left);Serial.print("\t");
     //Serial.println();
