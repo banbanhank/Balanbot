@@ -4,14 +4,31 @@
 #include <BalanbotMotor.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
+#include <Kalman.h>
 
 MPU6050 accelgyro;
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
+//------------------
+
+Kalman kalmanX; // Create the Kalman instances
+
+/* IMU Data */
+double accX, accY, accZ;
+double gyroX, gyroY, gyroZ;
+int16_t tempRaw;
+
+double gyroXangle; // Angle calculate using the gyro only
+double compAngleX; // Calculated angle using a complementary filter
+double kalAngleX; // Calculated angle using a Kalman filter
+
+uint32_t timer;
+uint8_t i2cData[14]; // Buffer for I2C data
+
 
 SoftwareSerial BT(12,13);
 
-char val;  
+char val;
 String recieveData = "";   
 bool startRecieve = false;  
 
@@ -27,7 +44,7 @@ void timerInterrupt(){
     sei();
     float speed_right = encoder1.getSpeed(dT);
     float speed_left = encoder2.getSpeed(dT);
-    
+    getRoll();
     //Serial.print(speed_right);Serial.print("\t");
     //Serial.print(speed_left);Serial.print("\t");
     //Serial.println();
@@ -54,7 +71,5 @@ void setup(){
 }
 
 void loop(){
-
     //updateBT();
-    //getOrientation();
 }
