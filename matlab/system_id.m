@@ -1,15 +1,25 @@
 clear;clc;
-data = load("imu_data4.mat");
-data = data.x;
-phi = data/180*pi;
-
-theta = zeros(length(phi),1);
-thetad = zeros(length(phi),1);
-thetadd = zeros(length(phi),1);
-
+data = load("data5.mat");
+data = data.data;
+phi = data(:,1)/180*pi;
 u = zeros(length(phi),1);
+range=250:400;
+
+%get thetad
+thetad = data(:,2);
+
+%get thetadd
+dt = 0.01;
+for i=2:length(thetad)
+    thetadd(i-1) = (thetad(i)-thetad(i-1))/dt;
+end
+thetadd(length(thetad)) = thetadd(end);
+thetadd = thetadd';
+
+
 
 %smoothing
+%{
 head = 130;
 tail = 160;
 A=[head*head head 1;tail*tail tail 1;(tail+1)*(tail+1) (tail+1) 1];
@@ -17,6 +27,8 @@ coe = pinv(A)*[phi(head);phi(tail);phi(tail+1)];
 for i=head+1:tail-1
     phi(i)=i*i*coe(1)+i*coe(2)+coe(3);
 end
+%}
+
 
 %get phid
 dt = 0.01; 
@@ -33,7 +45,6 @@ end
 phidd(length(phid)) = phidd(end);
 phidd = phidd';
 
-range=90:200;
 g1 = -thetadd(range);
 g2 = -2*cos(phi(range)).*phidd(range)+sin(2*phi(range)).*sec(phi(range)).*phid(range).*phid(range);
 g3 = -thetad(range);
