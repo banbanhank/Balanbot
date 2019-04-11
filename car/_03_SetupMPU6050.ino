@@ -26,11 +26,7 @@ void setupMPU6050()
     accZ = (i2cData[4] << 8) | i2cData[5];
 
     double roll = atan(accY / sqrt(accX * accX + accZ * accZ)) * RAD_TO_DEG;
-
     kalmanX.setAngle(roll); // Set starting angle
-    gyroXangle = roll;
-    compAngleX = roll;
-
     timer = micros();
 }
 
@@ -41,30 +37,14 @@ double getPhi()
     accX = ((i2cData[0] << 8) | i2cData[1]);
     accY = ((i2cData[2] << 8) | i2cData[3]);
     accZ = ((i2cData[4] << 8) | i2cData[5]);
-    tempRaw = (i2cData[6] << 8) | i2cData[7];
     gyroX = (i2cData[8] << 8) | i2cData[9];
-    gyroY = (i2cData[10] << 8) | i2cData[11];
-    gyroZ = (i2cData[12] << 8) | i2cData[13];
 
     double dt = (double)(micros() - timer) / 1000000; // Calculate delta time
     timer = micros();
 
     double roll = atan(accY / sqrt(accX * accX + accZ * accZ)) * RAD_TO_DEG;
     double gyroXrate = gyroX / 131.0; // Convert to deg/s
-
     kalAngleX = kalmanX.getAngle(roll, gyroXrate, dt); // Calculate the angle using a Kalman filter
 
-    gyroXangle += gyroXrate * dt; // Calculate gyro angle without any filter
-    //gyroXangle += kalmanX.getRate() * dt; // Calculate gyro angle using the unbiased rate
-
-    compAngleX = 0.93 * (compAngleX + gyroXrate * dt) + 0.07 * roll; // Calculate the angle using a Complimentary filter
-
-    // Reset the gyro angle when it has drifted too much
-    if (gyroXangle < -180 || gyroXangle > 180)
-        gyroXangle = kalAngleX;
-
-    // Serial.print(roll); Serial.print("\t");
-    //Serial.print(gyroXangle); Serial.print("\t");
-    //Serial.print(compAngleX); Serial.print("\t");
     return kalAngleX;
 }

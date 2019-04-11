@@ -15,11 +15,8 @@ Kalman kalmanX; // Create the Kalman instances
 
 /* IMU Data */
 double accX, accY, accZ;
-double gyroX, gyroY, gyroZ;
-int16_t tempRaw;
+double gyroX;
 
-double gyroXangle; // Angle calculate using the gyro only
-double compAngleX; // Calculated angle using a complementary filter
 double kalAngleX; // Calculated angle using a Kalman filter
 
 uint32_t timer;
@@ -75,5 +72,6 @@ void setup(){
 }
 
 void loop(){
+
     //updateBT();
 }
