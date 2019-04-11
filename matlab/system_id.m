@@ -2,11 +2,11 @@ clear;clc;
 data = load("data5.mat");
 data = data.data;
 phi = data(:,1)/180*pi;
-u = zeros(length(phi),1);
-range=250:400;
-
-%get thetad
 thetad = data(:,2);
+u = zeros(length(phi),1);
+
+plot(phi),grid
+range=250:400;
 
 %get thetadd
 dt = 0.01;
@@ -60,4 +60,3 @@ G2=[g6 g7 g8 g9 g10];
 E = phidd(range);
 a = pinv(G1'*G1)*G1'*E
 b = pinv(G2'*G2)*G2'*E
-plot([phi,thetad,u]),grid
