@@ -11,6 +11,7 @@ class BalanbotEncoder{
     int mPosition;
     float speed;
     int lastPosition;
+    float *v_pre;
     float lastAngle;
   public:
     BalanbotEncoder(); 
