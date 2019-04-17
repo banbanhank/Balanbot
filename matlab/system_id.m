@@ -1,14 +1,14 @@
 clear;clc;
-data = load("data7.mat");
+data = load("data5.mat");
 data = data.data;
 phi = data(:,1)/180*pi;
 thetad = data(:,2);
 u = zeros(length(phi),1);
 for i=1:length(phi)
-   u(i)=100; 
+   u(i)=0; 
 end
 plot(phi),grid
-range=80:200;
+range=250:400;
 
 %get thetadd
 dt = 0.01;
