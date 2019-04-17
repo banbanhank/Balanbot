@@ -14,7 +14,7 @@ B = [0;B2;0;B4];
 C = [1 0 0 0;0 0 1 0];
 D = [0;0];
 
-Gss = ss(A,B,C,D);
+[t1,t2] = ss2tf(A,B,C,D);
 sys1 = tf(t1(1,:),t2);
 sys2 = tf(t1(2,:),t2);
 rlocus(sys1,sys2)
