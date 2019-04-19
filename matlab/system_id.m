@@ -2,7 +2,7 @@ clear;clc;
 data = load("data5.mat");
 data = data.data;
 phi = data(:,1)/180*pi;
-range=260:285;
+range=260:295;
 
 %smoothing phi
 for i=2:length(phi)-1
@@ -43,15 +43,11 @@ A1 = pinv(G1'*G1)*G1'*E;
 B1 = pinv(G2'*G2)*G2'*E;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+clear g2 g4 g8 g9 phi phidd phid range 
 data2 = load("data7.mat");
 data2 = data2.data;
 range=85:99;
-
-u = zeros(length(phi),1);
-for i=1:length(phi)
-   u(i)=5; 
-end
+dt = 0.01;
 
 %get thetad
 thetad = data2(:,2)/180*pi;
@@ -61,7 +57,6 @@ for i=2:length(thetad)-1
 end
 
 %get thetadd
-dt = 0.01;
 for i=2:length(thetad)
     thetadd(i-1) = (thetad(i)-thetad(i-1))/dt;
 end
@@ -78,7 +73,6 @@ phi = data2(:,1)/180*pi;
 for i=2:length(phi)-1
     phi(i) = (phi(i+1)+phi(i-1))/2;
 end
-
 %get phid
 dt = 0.01; 
 for i=2:length(phi)
@@ -98,6 +92,14 @@ phidd(length(phid)) = phidd(end);
 %smoothing phidd
 for i=2:length(phidd)-1
     phidd(i) = (phidd(i+1)+phidd(i-1))/2;
+end
+
+phid = phid';
+phidd = phidd';
+
+u = zeros(length(phi),1);
+for i=1:length(phi)
+   u(i)=5; 
 end
 
 
