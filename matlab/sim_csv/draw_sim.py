@@ -26,12 +26,13 @@ def draw_state(phi, theta):
     return image
 
 
-df = pd.read_csv(os.path.abspath("sim_0v.csv"))
+df = pd.read_csv(os.path.abspath("sim_5v.csv"))
 
 for i, state in enumerate(df.values):
     state_img = draw_state(state[0], state[1])
     cv2.imshow('simulation', state_img)
     out.write(state_img)
+    if i%30==0 : cv2.imwrite('output%d.jpg'%i, state_img)
 
     k = cv2.waitKey(10)
 
