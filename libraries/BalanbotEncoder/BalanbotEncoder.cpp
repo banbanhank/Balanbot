@@ -52,10 +52,10 @@ float BalanbotEncoder::getSpeed(float dt){
   float newAngle = 2*PI*((float)mPosition/(float)PPR)*RAD_TO_DEG;
   speed = (lastAngle - newAngle) / dt;
   lastAngle = newAngle;
-  v_pre[5]=v_pre[4];
-  v_pre[4]=v_pre[3];
-  v_pre[3]=v_pre[2];
-  v_pre[2]=v_pre[1];
-  v_pre[1]=speed;
-  return (v_pre[1]+v_pre[2]+v_pre[3]+v_pre[4]+v_pre[5])/5.0;
+  // v_pre[5]=v_pre[4];
+  // v_pre[4]=v_pre[3];
+  // v_pre[3]=v_pre[2];
+  // v_pre[2]=v_pre[1];
+  // v_pre[1]=speed;
+  return speed;
 }
