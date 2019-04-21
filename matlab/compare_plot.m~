@@ -1,0 +1,11 @@
+clear;clc;
+file = load("data7.mat");
+data = file.data;
+real_range = 221:500;
+phi_real = data
+plot()
+file = load("sim5v.mat");
+sim_range = 1:280;
+phi_sim = file.out.phi_sim(sim_range,2);
+
+%plot([phi_real,phi_sim]),grid;

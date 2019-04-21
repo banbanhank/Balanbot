@@ -4,10 +4,6 @@ data = data.data;
 phi = data(:,1)/180*pi;
 range=261:295;
 
-%smoothing phi
-for i=2:length(phi)-1
-    phi(i) = (phi(i+1)+phi(i-1))/2;
-end
 
 %get phid
 dt = 0.01; 
