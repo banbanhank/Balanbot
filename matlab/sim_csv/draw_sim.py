@@ -11,7 +11,6 @@ pole_l = 150
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter('simulation.mp4', fourcc, 100.0, (width, height))
-cv2.VideoWriter
 
 def draw_state(phi, theta):
     image = np.zeros((height, width, 3), np.uint8)
@@ -26,7 +25,7 @@ def draw_state(phi, theta):
     return image
 
 
-df = pd.read_csv(os.path.abspath("sim_5v.csv"))
+df = pd.read_csv(os.path.abspath("sim_0v.csv"))
 
 for i, state in enumerate(df.values):
     state_img = draw_state(state[0], state[1])
