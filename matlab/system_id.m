@@ -1,8 +1,8 @@
 clear;clc;
-data = load("data/data5.mat");
+data = load("data/data9.mat")
 data = data.data;
-phi = data(:,1)/180*pi;
-range=261:295;
+phi = data(:,2)/180*pi;
+range=145:161;
 
 
 %get phid
@@ -32,13 +32,13 @@ B1 = pinv(G2'*G2)*G2'*E;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear g2 g4 g8 g9 phi phidd phid range 
-data2 = load("data/data7.mat");
+data2 = load("data/data10.mat");
 data2 = data2.data;
-range=85:99;
+range=128:134;
 dt = 0.01;
 
 %get thetad
-thetad = data2(:,2)/180*pi.*-1;
+thetad = data2(:,1)/180*pi.*-1;
 
 %get thetadd
 for i=2:length(thetad)
@@ -48,8 +48,8 @@ thetadd(length(thetad)) = thetadd(end);
 thetadd = thetadd';
 
 %get phi
-phi = data2(:,1)/180*pi;
-
+phi = data2(:,2)/180*pi;
+plot(phi);
 %get phid
 dt = 0.01; 
 for i=2:length(phi)
@@ -67,7 +67,7 @@ phidd = phidd';
 
 u = zeros(length(phi),1);
 for i=1:length(phi)
-   u(i)=-5; 
+   u(i)=-1; 
 end
 
 
