@@ -15,5 +15,5 @@ D = [0;0];
 
 [t1,t2] = ss2tf(A,B,C,D);
 
-sys2 = tf(t1(1,:),t2);
+sys2 = tf(1,t2);
 rlocus(sys2)
