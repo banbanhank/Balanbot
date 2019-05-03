@@ -24,21 +24,18 @@ void remoteControl(String data) {
     int power2 = 0;
     int power_data1=0;
     int power_data2=0;
-    if(data[0]=='1')
-        motor1.InverseRotationDirectionDefinition(true);
-    else
-        motor1.InverseRotationDirectionDefinition(false);
-    
-    if(data[3]=='1')
-        motor2.InverseRotationDirectionDefinition(true);
-    else
-        motor2.InverseRotationDirectionDefinition(false);
 
     power1=(data[1]-48)*10+(data[2]-48);
     power2=(data[4]-48)*10+(data[5]-48);
     power_data1=power1*25.0/33.0; //0~75
     power_data2=power2*25.0/33.0; //0~75
     
+    if(data[0]=='1')
+        power_data1 *= -1;
+    
+    if(data[3]=='1')
+        power_data2 *= -1;
+
     if(power1==0 && power2==0){
         motor1.Rotate(0); 
         motor2.Rotate(0);

@@ -49,9 +49,10 @@ void BalanbotMotor::SetEncoderPins( const int interruptPin,
   mEncoder.SetDirectionPin(directionPin); 
 }
 
-void BalanbotMotor::SetControl(int mode, float reference)
+void BalanbotMotor::SetControl(int mode, float reference,float kp, float ki, float kd)
 {
-  //TODO
+  angleController.SetPID(kp,ki,kd);
+  angleController.SetReference(0);
 }
 
 void BalanbotMotor::InverseRotationDirectionDefinition(const bool ifInverse){
@@ -77,13 +78,9 @@ float BalanbotMotor::GetAngle()
 }
 
 void BalanbotMotor::Rotate(const int voltage){
-  // Move specific motor at speed and direction
- // motor: 1 for A, 2 for B
- // speed: 0 is off, and 255 is full speed
- // direction: 0 clockwise, 1 counter-clockwise 
   boolean inPin1 = LOW;                         // 初始轉動方向為 clockwise
   boolean inPin2 = HIGH;
-  if(mDirectionCoefficient == 1) {                          // 若 direction 指定為 1 時，轉動方向為 counterclockwise
+  if(mDirectionCoefficient*voltage > 0) {                          // 若 direction 指定為 1 時，轉動方向為 counterclockwise
     inPin1 = HIGH;
     inPin2 = LOW;
   }
@@ -91,15 +88,8 @@ void BalanbotMotor::Rotate(const int voltage){
   digitalWrite(mStandbyPin, HIGH);                     // disable standby(可動)
   digitalWrite(mDirectionPinA, inPin1);
   digitalWrite(mDirectionPinB, inPin2);
-  analogWrite(mPwmPin, voltage);
-  /*
-  Serial.println(mPwmPin); 
-  Serial.println(voltage); 
-  Serial.println(mDirectionPinA); 
-  Serial.println(inPin1); 
-  Serial.println(mDirectionPinB); 
-  Serial.println(inPin2); 
-  */
+  analogWrite(mPwmPin, abs(voltage));
+  
 }
 
 void BalanbotMotor::Brake(){
@@ -122,13 +112,14 @@ void BalanbotMotor::UpdateEncoder(){
   mEncoder.Update();
 }
 
-void BalanbotMotor::UpdateControl()
+void BalanbotMotor::UpdateControl(float phi)
 {
-  //TODO
+  int effort = (int)angleController.Update(phi);
+  Rotate(effort);
 }
 
-void BalanbotMotor::Update(){
+void BalanbotMotor::Update(float phi){
   UpdateAngle();
   UpdateSpeed();
-  UpdateControl();
+  UpdateControl(phi);
 }
