@@ -52,7 +52,7 @@ void BalanbotMotor::SetEncoderPins( const int interruptPin,
 void BalanbotMotor::SetControl(int mode, float reference,float kp, float ki, float kd)
 {
   angleController.SetPID(kp,ki,kd);
-  angleController.SetReference(0);
+  angleController.SetReference(reference);
 }
 
 void BalanbotMotor::InverseRotationDirectionDefinition(const bool ifInverse){
