@@ -41,15 +41,15 @@ void timerInterrupt(){
     double phi = getPhi();
     motor1.Update(phi);
     motor2.Update(phi);
-    float speed_right = motor1.GetSpeed();
-    float speed_left = motor2.GetSpeed();
+    //float speed_right = motor1.GetSpeed();
+    //float speed_left = motor2.GetSpeed();
     
     //BT.println(phi);
     //BT.println(speed_right);
     Serial.println(phi);
     //Serial.print(speed_right);Serial.print("\t");
     //Serial.print(speed_left);Serial.print("\t");
-    Serial.println();
+    //Serial.println();
 }
 
 void encoder1Interrupt(){

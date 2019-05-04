@@ -13,8 +13,13 @@ void setupMotor(){
     motor1.InverseRotationDirectionDefinition(false);
     motor2.InverseRotationDirectionDefinition(false);
 
-    motor1.SetControl(0,-1.5,25,0.50,0.08);
-    motor2.SetControl(0,-1.5,25,0.50,0.08);
+    int mode = 0;
+    float reference = -1.3;
+    float kp = 25;
+    float ki = 0.05;
+    float kd = 20;
+    motor1.SetControl(mode,reference,kp,ki,kd);
+    motor2.SetControl(mode,reference,kp,ki,kd);
 
     motor1.SetEncoderPins(C2_A,C1_A);
     motor2.SetEncoderPins(C2_B,C1_B);
