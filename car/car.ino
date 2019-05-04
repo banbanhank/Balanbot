@@ -47,8 +47,8 @@ void timerInterrupt(){
     //BT.println(phi);
     //BT.println(speed_right);
     Serial.println(phi);
-    Serial.print(speed_right);Serial.print("\t");
-    Serial.print(speed_left);Serial.print("\t");
+    //Serial.print(speed_right);Serial.print("\t");
+    //Serial.print(speed_left);Serial.print("\t");
     Serial.println();
 }
 
