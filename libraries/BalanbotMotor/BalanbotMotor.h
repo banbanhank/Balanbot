@@ -31,16 +31,16 @@ class BalanbotMotor{
                        const int standbyPin);
     void SetEncoderPins(const int interruptPin, 
                         const int directionPin);
-    void SetControl(int mode, float reference);
+    void SetControl(int mode, float reference, float kp, float ki, float kd);
     void InverseRotationDirectionDefinition(const bool ifInverse);
     int GetEncoderInterruptPin();
     float GetSpeed();
     float GetAngle();
-    void Rotate(const int voltage);
+    void Rotate(int voltage);
     void Brake();
     void UpdateEncoder();
-    void Update();
-    void move(int value); //value is 
+    void UpdateControl(float phi);
+    void Update(float phi);
 
     PIDController angleController;
     PIDController speedController;

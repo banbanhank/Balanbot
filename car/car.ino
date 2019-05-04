@@ -31,32 +31,33 @@ bool startRecieve = false;
 
 BalanbotMotor motor1;
 BalanbotMotor motor2;
-BalanbotEncoder encoder1;
-BalanbotEncoder encoder2;
+
 
 float dT = 0.01;
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 void timerInterrupt(){
     sei();
-    float speed_right = encoder1.getSpeed(dT);
-    float speed_left = encoder2.getSpeed(dT);
     double phi = getPhi();
+    motor1.Update(phi);
+    motor2.Update(phi);
+    float speed_right = motor1.GetSpeed();
+    float speed_left = motor2.GetSpeed();
+    
+    //BT.println(phi);
+    //BT.println(speed_right);
     Serial.println(phi);
-    Serial.println(speed_right);
-    BT.println(phi);
-    BT.println(speed_right);
-    //Serial.print(speed_right);Serial.print("\t");
-    //Serial.print(speed_left);Serial.print("\t");
-    //Serial.println();
+    Serial.print(speed_right);Serial.print("\t");
+    Serial.print(speed_left);Serial.print("\t");
+    Serial.println();
 }
 
 void encoder1Interrupt(){
-    encoder1.Update();
+    motor1.UpdateEncoder();
 }
 
 void encoder2Interrupt(){
-    encoder2.Update();
+    motor2.UpdateEncoder();
 }
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -65,7 +66,6 @@ void setup(){
     Serial.begin(115200);   
     BT.begin(115200); 
     setupMotor();
-    setupEncoder();
     setupMPU6050();
     MsTimer2::set(dT*1000, timerInterrupt);
     MsTimer2::start();
