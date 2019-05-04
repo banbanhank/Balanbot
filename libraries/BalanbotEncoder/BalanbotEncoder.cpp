@@ -5,7 +5,7 @@ BalanbotEncoder::BalanbotEncoder() :
   mDirectionPin (0),
   mPosition (0)
 {
-  v_pre = new float[5];
+
 }
 
 void BalanbotEncoder::SetInterruptPin(const int pin){
@@ -48,14 +48,3 @@ void BalanbotEncoder::Update(){
     mPosition++;
 }
 
-float BalanbotEncoder::getSpeed(float dt){
-  float newAngle = 2*PI*((float)mPosition/(float)PPR)*RAD_TO_DEG;
-  speed = (lastAngle - newAngle) / dt;
-  lastAngle = newAngle;
-  // v_pre[5]=v_pre[4];
-  // v_pre[4]=v_pre[3];
-  // v_pre[3]=v_pre[2];
-  // v_pre[2]=v_pre[1];
-  // v_pre[1]=speed;
-  return speed;
-}

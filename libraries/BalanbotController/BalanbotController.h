@@ -18,7 +18,7 @@ class PIDController{
 		PIDController();
 		void SetPID(float kp, float ki, float kd);
 		void SetReference(float reference);
-		void GetIfSteady();
+		bool GetIfSteady();
 		float Update(float feedback);
 };
 
