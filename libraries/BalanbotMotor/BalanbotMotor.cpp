@@ -29,6 +29,8 @@ inline void BalanbotMotor::SetStandbyPin(const int pin)
 {
   mStandbyPin = pin;
   pinMode(mStandbyPin,OUTPUT);
+  digitalWrite(mStandbyPin, HIGH);                     // disable standby(可動)
+
 }
 
 void BalanbotMotor::SetMotorPins( const int pwmPin, 
@@ -85,7 +87,6 @@ void BalanbotMotor::Rotate(const int voltage){
     inPin2 = LOW;
   }
   
-  digitalWrite(mStandbyPin, HIGH);                     // disable standby(可動)
   digitalWrite(mDirectionPinA, inPin1);
   digitalWrite(mDirectionPinB, inPin2);
   analogWrite(mPwmPin, abs(voltage));
