@@ -10,7 +10,7 @@ project(balanbot)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
-  stdmsgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -70,7 +70,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+#   std_msgs
 # )
 
 ################################################
@@ -105,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES balanbot
-#  CATKIN_DEPENDS roscpp rospy stdmsgs
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
