@@ -1,0 +1,2 @@
+pi_camera
+-DCATKIN_DEVEL_PREFIX=/home/robotx/Balanbot/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/robotx/Balanbot/catkin_ws/install -G Unix Makefiles
