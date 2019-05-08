@@ -13,11 +13,6 @@ void setupMotor(){
     motor1.InverseRotationDirectionDefinition(false);
     motor2.InverseRotationDirectionDefinition(false);
 
-    int mode = 0;
-    float reference = -1.3;
-    float kp = 25;
-    float ki = 0.05;
-    float kd = 20;
     motor1.SetControl(mode,reference,kp,ki,kd);
     motor2.SetControl(mode,reference,kp,ki,kd);
 
