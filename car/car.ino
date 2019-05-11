@@ -6,9 +6,7 @@
 #include <Wire.h>
 #include <Kalman.h>
 
-MPU6050 accelgyro;
-int16_t ax, ay, az;
-int16_t gx, gy, gz;
+
 //------------------------
 //PID variable
 int mode = 0;
@@ -16,24 +14,23 @@ float reference = -0.5;
 float kp = 25;
 float ki = 1.05;
 float kd = 32;
-//-------------------------
-Kalman kalmanX; // Create the Kalman instances
 
-/* IMU Data */
+//-------------------------
+MPU6050 accelgyro;
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
+Kalman kalmanX; // Create the Kalman instances
 double accX, accY, accZ;
 double gyroX;
-
 double kalAngleX; // Calculated angle using a Kalman filter
-
 uint32_t timer;
 uint8_t i2cData[14]; // Buffer for I2C data
-
-
+//------------------------
 SoftwareSerial BT(12,13);
-
 char val;
 String recieveData = "";   
 bool startRecieve = false;  
+//------------------------
 
 BalanbotMotor motor1;
 BalanbotMotor motor2;
