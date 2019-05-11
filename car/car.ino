@@ -11,9 +11,9 @@
 //PID variable(phi)
 int mode = 0;
 float reference = -0.5;
-float kp = 25;
-float ki = 1.05;
-float kd = 32;
+float kp = 15;
+float ki = 1.10;
+float kd = 0.26;
 //PID variable(position)
 float preference = 0;
 float pkp = 0;
@@ -53,7 +53,7 @@ void timerInterrupt(){
     
     //BT.println(phi);
     //BT.println(speed_right);
-   // Serial.println(phi);
+    //Serial.println(phi);
     //Serial.print(speed_right);Serial.print("\t");
     //Serial.print(speed_left);Serial.print("\t");
     //Serial.println();

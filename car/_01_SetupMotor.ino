@@ -13,6 +13,9 @@ void setupMotor(){
     motor1.InverseRotationDirectionDefinition(false);
     motor2.InverseRotationDirectionDefinition(false);
 
+    motor1.SetControllerBound(255,-255,10,-10);
+    motor2.SetControllerBound(255,-255,10,-10);
+
     motor1.SetControl(0,reference,kp,ki,kd);
     motor2.SetControl(0,reference,kp,ki,kd);
     motor1.SetControl(1,preference,pkp,pki,pkd);

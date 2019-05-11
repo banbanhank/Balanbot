@@ -129,6 +129,7 @@ void BalanbotMotor::UpdateControl(float phi)
 {
   float pos_out = posController.Update(mAngle);
   int effort = (int)angleController.Update(phi+pos_out);
+  //Serial.println(effort);
   Rotate(effort);
 }
 

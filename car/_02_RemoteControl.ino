@@ -14,19 +14,12 @@ void updateBT(){
 }
 
 void remoteControl(String data) {
-          //check reliability
-      //if(data.length()!=6) return;
-      for(int i=0;i<data.length();i++){
-          if(data[i]<48 || data[i]>57){
-            if(data[i]!='r' && data[i]!='p' && data[i]!='i' && data[i]!='d' && data[i]!='e' &&  data[i]!='o' && data[i]!='u' && data[i]!='s' && data[i]!='.' && data[i]!='-')
-              return;
-          }
-      }    
-    //Serial.println(data);
-    int power1 = 0;
-    int power2 = 0;
-    int power_data1=0;
-    int power_data2=0;
+    for(int i=0;i<data.length();i++){
+        if(data[i]<48 || data[i]>57){
+          if(data[i]!='r' && data[i]!='p' && data[i]!='i' && data[i]!='d' && data[i]!='e' &&  data[i]!='o' && data[i]!='u' && data[i]!='s' && data[i]!='.' && data[i]!='-')
+            return;
+        }
+    }
 
     String data_PID="" ;
     
@@ -89,7 +82,7 @@ void remoteControl(String data) {
       motor2.SetControl(mode,preference,pkp,pki,pkd);          
     }            
     else{
-
+      /*
       power1=(data[1]-48)*10+(data[2]-48);
       power2=(data[4]-48)*10+(data[5]-48);
       power_data1=power1*25.0/33.0; //0~75
@@ -109,6 +102,7 @@ void remoteControl(String data) {
           motor1.Rotate(power_data1); 
           motor2.Rotate(power_data2);
       }
+      */
     }
 
     
