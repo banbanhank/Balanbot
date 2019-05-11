@@ -9,8 +9,14 @@
 MPU6050 accelgyro;
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
-//------------------
-
+//------------------------
+//PID variable
+int mode = 0;
+float reference = -0.5;
+float kp = 25;
+float ki = 1.05;
+float kd = 32;
+//-------------------------
 Kalman kalmanX; // Create the Kalman instances
 
 /* IMU Data */
