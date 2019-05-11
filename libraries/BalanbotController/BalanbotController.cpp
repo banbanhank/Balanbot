@@ -16,6 +16,11 @@ void PIDController::SetPID(float kp, float ki, float kd)
 	mKd = kd;
 }
 
+void SetBound(float up,float down){
+	upper_bound = up;
+	lower_bound = down;
+}
+
 void PIDController::SetReference(float reference)
 {
 	mReference = reference;
@@ -34,8 +39,6 @@ float PIDController::Update(float feedback)
 	float iEffort = 0.0;
 	float dEffort = 0.0;
 	float effort = 0.0;
-	float upper_bound = 255;
-	float lower_bound = -255;
 	mError = mReference - feedback;
 	
 	pEffort = mKp * mError;
