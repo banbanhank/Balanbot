@@ -10,12 +10,17 @@ MPU6050 accelgyro;
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
 //------------------------
-//PID variable
+//PID variable(phi)
 int mode = 0;
 float reference = -0.5;
 float kp = 25;
 float ki = 1.05;
 float kd = 32;
+//PID variable(position)
+float preference = 0;
+float pkp = 0;
+float pki = 0;
+float pkd = 0;
 //-------------------------
 Kalman kalmanX; // Create the Kalman instances
 
@@ -52,7 +57,7 @@ void timerInterrupt(){
     
     //BT.println(phi);
     //BT.println(speed_right);
-    Serial.println(phi);
+   // Serial.println(phi);
     //Serial.print(speed_right);Serial.print("\t");
     //Serial.print(speed_left);Serial.print("\t");
     //Serial.println();
@@ -79,5 +84,5 @@ void setup(){
 
 void loop(){
 
-    //updateBT();
+    updateBT();
 }
