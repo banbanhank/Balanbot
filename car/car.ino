@@ -14,7 +14,9 @@ float reference = -0.5;
 float kp = 25;
 float ki = 1.05;
 float kd = 32;
-
+float pkp = 0.5;
+float pki = 0;
+float pkd = 0;
 //-------------------------
 MPU6050 accelgyro;
 int16_t ax, ay, az;

@@ -17,6 +17,9 @@ void setupMotor(){
     motor2.SetControllerBound(90,-90,255,-255);
     motor1.SetControl(0,reference,kp,ki,kd);
     motor2.SetControl(0,reference,kp,ki,kd);
+    
+    motor1.SetControl(1,0,pkp,pki,pkd);
+    motor2.SetControl(1,0,pkp,pki,pkd);
 
     motor1.SetEncoderPins(C2_A,C1_A);
     motor2.SetEncoderPins(C2_B,C1_B);

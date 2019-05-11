@@ -16,7 +16,7 @@ void PIDController::SetPID(float kp, float ki, float kd)
 	mKd = kd;
 }
 
-void SetBound(float up,float down){
+void PIDController::SetBound(float up,float down){
 	upper_bound = up;
 	lower_bound = down;
 }

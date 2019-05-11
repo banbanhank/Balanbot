@@ -63,7 +63,7 @@ void BalanbotMotor::SetControl(int mode, float reference,float kp, float ki, flo
   }
 }
 
-void SetControllerBound(float angUp,float angDown,float posUp,float posDown){
+void BalanbotMotor::SetControllerBound(float angUp,float angDown,float posUp,float posDown){
   angleController.SetBound(angUp,angDown);
   posController.SetBound(posUp,posDown);
 }
@@ -84,7 +84,7 @@ int BalanbotMotor::GetEncoderInterruptPin()
 float BalanbotMotor::GetSpeed() 
 {
   return mSpeed;
-} 
+}
 
 float BalanbotMotor::GetAngle() 
 {
@@ -125,15 +125,15 @@ void BalanbotMotor::UpdateEncoder(){
   mEncoder.Update();
 }
 
-void BalanbotMotor::UpdateControl(float phi,float pos)
+void BalanbotMotor::UpdateControl(float phi)
 {
-  float pos_out = posController.Update(pos);
+  float pos_out = posController.Update(mAngle);
   int effort = (int)angleController.Update(phi+pos_out);
   Rotate(effort);
 }
 
-void BalanbotMotor::Update(float phi,float pos){
+void BalanbotMotor::Update(float phi){
   UpdateAngle();
   UpdateSpeed();
-  UpdateControl(phi,pos);
+  UpdateControl(phi);
 }
