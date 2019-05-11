@@ -53,9 +53,21 @@ void BalanbotMotor::SetEncoderPins( const int interruptPin,
 
 void BalanbotMotor::SetControl(int mode, float reference,float kp, float ki, float kd)
 {
-  angleController.SetPID(kp,ki,kd);
-  angleController.SetReference(reference);
+  if(mode==0){
+    angleController.SetPID(kp,ki,kd);
+    angleController.SetReference(reference);
+  }
+  else{
+    posController.SetPID(kp,ki,kd);
+    posController.SetReference(reference);
+  }
 }
+
+void BalanbotMotor::SetControllerBound(float angUp,float angDown,float posUp,float posDown){
+  angleController.SetBound(angUp,angDown);
+  posController.SetBound(posUp,posDown);
+}
+
 
 void BalanbotMotor::InverseRotationDirectionDefinition(const bool ifInverse){
   if( ifInverse )
@@ -72,7 +84,7 @@ int BalanbotMotor::GetEncoderInterruptPin()
 float BalanbotMotor::GetSpeed() 
 {
   return mSpeed;
-} 
+}
 
 float BalanbotMotor::GetAngle() 
 {
@@ -115,7 +127,8 @@ void BalanbotMotor::UpdateEncoder(){
 
 void BalanbotMotor::UpdateControl(float phi)
 {
-  int effort = (int)angleController.Update(phi);
+  float pos_out = posController.Update(mAngle);
+  int effort = (int)angleController.Update(phi+pos_out);
   Rotate(effort);
 }
 

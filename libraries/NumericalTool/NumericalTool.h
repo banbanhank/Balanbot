@@ -17,7 +17,7 @@ class Differentiator{
         } 
     }
     float differential(float input){
-        /*
+        
         input_state[2] = input_state[1];
         input_state[1] = input_state[0];
         input_state[0] = input;
@@ -29,11 +29,11 @@ class Differentiator{
                         - 7.839 * input_state[2];
     
         return output_state[0];
-        */
+        /*
         input_state[1] = input_state[0];
         input_state[0] = input;
         return input_state[0]-input_state[1];
-
+        */
     }
 };
 
@@ -47,7 +47,7 @@ class Integrator{
         Integrator(){ ts_ = 0.01; }
         void setTs(float ts){ ts_ = ts; }
         float integral(float input){
-            /*
+            
             output_[0] = ts_*input_[1] + output_[1];
             
             input_[1] = input_[0];
@@ -55,9 +55,10 @@ class Integrator{
             output_[1] = output_[0];
 
             return output_[0];
-            */
+            /*
            input_[0] += input;
            return input_[0];
+           */
         }
 };
 

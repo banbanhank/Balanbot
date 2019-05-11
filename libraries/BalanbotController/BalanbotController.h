@@ -11,6 +11,8 @@ class PIDController{
 		float mReference;
 		float mKp, mKi, mKd;
 		float mError;
+		float upper_bound;
+		float lower_bound;
 		Differentiator mDifferentiator;
     	Integrator mIntegrator;  
 
@@ -18,6 +20,7 @@ class PIDController{
 		PIDController();
 		void SetPID(float kp, float ki, float kd);
 		void SetReference(float reference);
+		void SetBound(float up,float down);
 		bool GetIfSteady();
 		float Update(float feedback);
 };
