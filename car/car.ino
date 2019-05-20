@@ -11,9 +11,9 @@
 //PID variable(phi)
 int mode = 0;
 float reference = -0.5;
-float kp = 15;
-float ki = 1.10;
-float kd = 0.26;
+float kp = 25;
+float ki = 1.01;
+float kd = 32;
 //PID variable(position)
 float preference = 0;
 float pkp = 0;
@@ -70,8 +70,8 @@ void encoder2Interrupt(){
 //----------------------------------------------------------------------------------
 
 void setup(){
-    Serial.begin(115200);   
-    BT.begin(115200); 
+    Serial.begin(57600);   
+    BT.begin(57600);
     setupMotor();
     setupMPU6050();
     MsTimer2::set(dT*1000, timerInterrupt);

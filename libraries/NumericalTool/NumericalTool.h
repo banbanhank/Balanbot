@@ -17,7 +17,7 @@ class Differentiator{
         } 
     }
     float differential(float input){
-        
+        /*
         input_state[2] = input_state[1];
         input_state[1] = input_state[0];
         input_state[0] = input;
@@ -29,11 +29,11 @@ class Differentiator{
                         - 7.839 * input_state[2];
     
         return output_state[0];
-        /*
+        */
         input_state[1] = input_state[0];
         input_state[0] = input;
-        return input_state[0]-input_state[1];
-        */
+        return (input_state[0]-input_state[1]);
+        
     }
 };
 

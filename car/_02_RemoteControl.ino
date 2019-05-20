@@ -54,7 +54,8 @@ void remoteControl(String data) {
         data_PID += data[i];
       reference = data_PID.toFloat();
       motor1.SetControl(mode,reference,kp,ki,kd);
-      motor2.SetControl(mode,reference,kp,ki,kd);   
+      motor2.SetControl(mode,reference,kp,ki,kd);
+      //Serial.println(reference);  
 
     }
     else if(data[0]=='u'){
