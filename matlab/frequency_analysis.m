@@ -15,5 +15,21 @@ D = [0;0];
 
 [t1,t2] = ss2tf(A,B,C,D);
 
-sys2 = tf(1,t2);
-rlocus(sys2)
+%PID for phi
+pP=5;
+pI=0;
+pD=10;
+n1=100;
+
+%PID for theta
+tP=0.1;
+tI=0.03;
+tD=0.3;
+n2=100;
+
+pcontroller=tf(pP,1)+tf(pI,[1,0])+tf([pD*n1,0],[1,n1]);
+tcontroller=tf(tP,1)+tf(tI,[1,0])+tf([tD*n2,0],[1,n2]);
+sys2=tf(t1(1,:),t2)
+asys2 = sys2*pcontroller;
+figure(1)
+rlocus(asys2)
