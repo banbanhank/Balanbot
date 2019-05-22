@@ -3,7 +3,7 @@ data = load("data/data9.mat")
 data = data.data;
 phi = data(:,2)/180*pi;
 range=145:161;
-
+plot(phi);
 
 %get phid
 dt = 0.01; 
@@ -49,7 +49,7 @@ thetadd = thetadd';
 
 %get phi
 phi = data2(:,2)/180*pi;
-plot(phi);
+%plot(phi);
 %get phid
 dt = 0.01; 
 for i=2:length(phi)
