@@ -11,10 +11,10 @@ void setupMotor(){
     motor2.SetMotorPins(PWMB,BIN1,BIN2,STBY);
 
     motor1.InverseRotationDirectionDefinition(false);
-    motor2.InverseRotationDirectionDefinition(false);
+    motor2.InverseRotationDirectionDefinition(true);
 
-    motor1.SetControllerBound(255,-255,10,-10);
-    motor2.SetControllerBound(255,-255,10,-10);
+    motor1.SetControllerBound(150,-150,2,-2);
+    motor2.SetControllerBound(150,-150,2,-2);
 
     motor1.SetControl(0,reference,kp,ki,kd);
     motor2.SetControl(0,reference,kp,ki,kd);

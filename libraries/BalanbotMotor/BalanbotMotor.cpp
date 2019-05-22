@@ -69,7 +69,7 @@ void BalanbotMotor::SetControllerBound(float angUp,float angDown,float posUp,flo
 }
 
 
-void BalanbotMotor::InverseRotationDirectionDefinition(const bool ifInverse){
+void BalanbotMotor::InverseRotationDirectionDefinition(bool ifInverse){
   if( ifInverse )
     mDirectionCoefficient = -1.0;
   else
@@ -94,7 +94,7 @@ float BalanbotMotor::GetAngle()
 void BalanbotMotor::Rotate(const int voltage){
   boolean inPin1 = LOW;                         // 初始轉動方向為 clockwise
   boolean inPin2 = HIGH;
-  if(mDirectionCoefficient*voltage > 0) {                          // 若 direction 指定為 1 時，轉動方向為 counterclockwise
+  if(voltage > 0) {                          // 若 direction 指定為 1 時，轉動方向為 counterclockwise
     inPin1 = HIGH;
     inPin2 = LOW;
   }
@@ -115,6 +115,7 @@ void BalanbotMotor::UpdateAngle(){
             * (2*PI) 
             * ( static_cast<float>(encoderPosition) 
               / static_cast<float>(mEncoder.GetPPR()) );
+  //Serial.println(mAngle);
 }
 
 void BalanbotMotor::UpdateSpeed(){
@@ -128,6 +129,7 @@ void BalanbotMotor::UpdateEncoder(){
 void BalanbotMotor::UpdateControl(float phi)
 {
   float pos_out = posController.Update(mAngle);
+  //Serial.println(pos_out);
   int effort = (int)angleController.Update(phi+pos_out);
   //Serial.println(effort);
   Rotate(effort);

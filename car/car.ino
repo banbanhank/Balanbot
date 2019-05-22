@@ -9,11 +9,10 @@
 
 //------------------------
 //PID variable(phi)
-int mode = 0;
-float reference = -0.5;
-float kp = 25;
-float ki = 1.01;
-float kd = 32;
+float reference = -2;
+float kp = 24;
+float ki = 1.8;
+float kd = 35;
 //PID variable(position)
 float preference = 0;
 float pkp = 0;
@@ -27,7 +26,7 @@ Kalman kalmanX; // Create the Kalman instances
 double accX, accY, accZ;
 double gyroX;
 double kalAngleX; // Calculated angle using a Kalman filter
-uint32_t timer;
+uint32_t timer,btTimer;
 uint8_t i2cData[14]; // Buffer for I2C data
 //------------------------
 SoftwareSerial BT(12,13);
@@ -76,9 +75,18 @@ void setup(){
     setupMPU6050();
     MsTimer2::set(dT*1000, timerInterrupt);
     MsTimer2::start();
+    btTimer=micros();
 }
 
 void loop(){
-
     updateBT();
+    if((micros()-btTimer) > 100000){
+      btTimer = micros();
+      String info = String(kalAngleX) + ",";
+      info += String(motor1.GetAngle()) + ",";
+      info += String(motor2.GetAngle());
+      Serial.println(info);
+      BT.println(info);
+    }
+    
 }
