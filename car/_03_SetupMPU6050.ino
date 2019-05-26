@@ -16,6 +16,12 @@ void setupMPU6050()
         Serial.print(F("Error reading sensor"));
         while (1);
     }
+    accelgyro.setXAccelOffset(-2793);
+    accelgyro.setYAccelOffset(273);
+    accelgyro.setZAccelOffset(797);
+    accelgyro.setXGyroOffset(89);
+    accelgyro.setYGyroOffset(-912);
+    accelgyro.setZGyroOffset(7);
 
     delay(100); // Wait for sensor to stabilize
 
