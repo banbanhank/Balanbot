@@ -10,7 +10,7 @@ wheel_r = 50
 pole_l = 150
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-out = cv2.VideoWriter('simulation.mp4', fourcc, 100.0, (width, height))
+out = cv2.VideoWriter('simulation.mp4', fourcc, 1000.0, (width, height))
 
 def draw_state(phi, theta):
     image = np.zeros((height, width, 3), np.uint8)
@@ -25,15 +25,15 @@ def draw_state(phi, theta):
     return image
 
 
-df = pd.read_csv(os.path.abspath("sim_0v.csv"))
+df = pd.read_csv(os.path.abspath("sim_phi_control.csv"))
 
 for i, state in enumerate(df.values):
     state_img = draw_state(state[0], state[1])
     cv2.imshow('simulation', state_img)
     out.write(state_img)
-    if i%30==0 : cv2.imwrite('output%d.jpg'%i, state_img)
+    #if i%30==0 : cv2.imwrite('output%d.jpg'%i, state_img)
 
-    k = cv2.waitKey(10)
+    k = cv2.waitKey(1)
 
 
 out.release()
