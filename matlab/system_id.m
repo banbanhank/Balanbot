@@ -2,7 +2,7 @@ clear;clc;
 data = load("data/data9.mat")
 data = data.data;
 phi = data(:,2)/180*pi;
-range=145:161;
+range=147:163;
 plot(phi);
 
 %get phid
