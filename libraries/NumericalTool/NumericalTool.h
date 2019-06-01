@@ -56,18 +56,17 @@ class Integrator{
             double dt = (double)(micros() - time) / 1000000; // Calculate delta time
             time = micros();
             /*
-            output_[0] = dt*input_[1] + output_[1];
             
+            output_[0] = ts_*input_[1] + output_[1];            
             input_[1] = input_[0];
             input_[0] = input;
             output_[1] = output_[0];
 
             return output_[0];
             */
-           
-           input_[0] += input*dt;
+
+           input_[0] += input;
            return input_[0];
-           
         }
 };
 
