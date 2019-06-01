@@ -16,13 +16,14 @@ void setupMPU6050()
         Serial.print(F("Error reading sensor"));
         while (1);
     }
+    
     accelgyro.setXAccelOffset(-2793);
-    accelgyro.setYAccelOffset(273);
-    accelgyro.setZAccelOffset(797);
-    accelgyro.setXGyroOffset(89);
-    accelgyro.setYGyroOffset(-912);
-    accelgyro.setZGyroOffset(7);
-
+    accelgyro.setYAccelOffset(303);
+    accelgyro.setZAccelOffset(831);
+    accelgyro.setXGyroOffset(79);
+    accelgyro.setYGyroOffset(-919);
+    accelgyro.setZGyroOffset(39);
+    
     delay(100); // Wait for sensor to stabilize
 
     /* Set kalman and gyro starting angle */

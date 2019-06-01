@@ -9,10 +9,10 @@
 
 //------------------------
 //PID variable(phi)
-float reference = 0;
-float kp = 15;
-float ki = 2;
-float kd = 30;
+float reference = 1.75;
+float kp = 17;
+float ki = 230;
+float kd = 0.32;
 //PID variable(position)
 float preference = 0;
 float pkp = 0;
@@ -83,9 +83,9 @@ void loop(){
     if((micros()-btTimer) > 100000){
       btTimer = micros();
       String info = String(kalAngleX) + ",";
-      info += String(motor1.GetAngle()) + ",";
-      info += String(motor2.GetAngle());
-      Serial.println(info);
+      info += String(motor1.getPosError()) + ",";
+      info += String(motor2.getPosError());
+      //Serial.println(info);
       BT.println(info);
     }
     

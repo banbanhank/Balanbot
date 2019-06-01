@@ -11,6 +11,7 @@ class BalanbotMotor{
     BalanbotEncoder mEncoder; 
     Differentiator mDifferentiator;
     float mDirectionCoefficient;
+    float posError;
     int mPwmPin, mDirectionPinA, mDirectionPinB, mStandbyPin;
     int mControlMode;
     float mSpeed;
@@ -35,6 +36,7 @@ class BalanbotMotor{
     void SetControllerBound(float angUp,float angDown,float posUp,float posDown);
     void InverseRotationDirectionDefinition(bool ifInverse);
     int GetEncoderInterruptPin();
+    float getPosError();
     float GetSpeed();
     float GetAngle();
     void Rotate(int voltage);
