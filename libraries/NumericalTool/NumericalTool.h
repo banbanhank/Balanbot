@@ -33,6 +33,7 @@ class Differentiator{
     
         return output_state[0];
         */
+       
        double dt = (double)(micros() - time) / 1000000; // Calculate delta time
        time = micros();
        input_state[1] = input_state[0];
@@ -56,17 +57,21 @@ class Integrator{
             double dt = (double)(micros() - time) / 1000000; // Calculate delta time
             time = micros();
             /*
+            output_[0] = dt*input_[1] + output_[1];
             
-            output_[0] = ts_*input_[1] + output_[1];            
             input_[1] = input_[0];
             input_[0] = input;
             output_[1] = output_[0];
 
             return output_[0];
             */
-
-           input_[0] += input;
+           
+           input_[0] += input*dt;
            return input_[0];
+        }
+
+        void clear(){
+            input_[0] = 0;
         }
 };
 

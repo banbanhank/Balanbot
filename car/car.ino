@@ -10,8 +10,8 @@
 //------------------------
 //PID variable(phi)
 float reference = 1.75;
-float kp = 17;
-float ki = 230;
+float kp = 18;
+float ki = 280;
 float kd = 0.32;
 //PID variable(position)
 float preference = 0;
