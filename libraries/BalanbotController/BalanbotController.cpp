@@ -26,9 +26,10 @@ void PIDController::SetReference(float reference)
 	mReference = reference;
 }
 
+
 bool PIDController::GetIfSteady()
 {
-	if(mError < ERROR_TOLERANCE)
+	if(-ERROR_TOLERANCE < mError && mError < ERROR_TOLERANCE)
 		return true;
 	return false;
 }
@@ -40,7 +41,14 @@ float PIDController::Update(float feedback)
 	float dEffort = 0.0;
 	float effort = 0.0;
 	mError = mReference - feedback;
+
+	//Serial.print(mError);
+  	//Serial.print(" ");
 	
+	if(GetIfSteady()){
+		mError=0;
+		//mIntegrator.clear();
+	}
 	pEffort = mKp * mError;
 	iEffort = mKi * mIntegrator.integral(mError);
 	dEffort = mKd * mDifferentiator.differential(mError);

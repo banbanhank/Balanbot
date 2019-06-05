@@ -2,9 +2,10 @@
 #define BalanbotCONTROLLER_H
 
 #include <NumericalTool.h>
+#include <Arduino.h>
 
 class PIDController{
-	const float ERROR_TOLERANCE = 0.5;
+	const float ERROR_TOLERANCE = 0.15;
 
 	private:
 		bool mSteady;
