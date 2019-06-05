@@ -29,9 +29,13 @@ class Detector(object):
 
         for c in cnts:
             M = cv2.moments(c)
-            cX = int((M["m10"] / M["m00"]) * ratio)
-            cY = int((M["m01"] / M["m00"]) * ratio)
-            shape = sd.detect(c)
+            try:
+                cX = int((M["m10"] / M["m00"]) * ratio)
+                cY = int((M["m01"] / M["m00"]) * ratio)
+            except:
+                cX = 0
+                cY = 0
+            shape = self.sd.detect(c)
             
             c = c.astype("float")
             c *= ratio
