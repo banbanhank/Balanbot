@@ -10,7 +10,7 @@ class ShapeDetector:
 		# initialize the shape name and approximate the contour
 		shape = "unidentified"
 		peri = cv2.arcLength(c, True)
-		approx = cv2.approxPolyDP(c, 0.04 * peri, True)
+		approx = cv2.approxPolyDP(c, 0.04* peri, True)
 
 		# if the shape is a triangle, it will have 3 vertices
 		if len(approx) == 3:
