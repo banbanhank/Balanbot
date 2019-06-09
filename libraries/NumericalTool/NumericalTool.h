@@ -65,7 +65,7 @@ class Integrator{
 
             return output_[0];
             */
-           
+           //Serial.println(dt);
            input_[0] += input*dt;
            return input_[0];
         }

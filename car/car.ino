@@ -11,13 +11,13 @@
 //PID variable(phi)
 float reference = 1.75;
 float kp = 18;
-float ki = 280;
-float kd = 0.32;
+float ki = 300;
+float kd = 0.35;
 //PID variable(position)
 float preference = 0;
-float pkp = 0;
+float pkp = 0.06;
 float pki = 0;
-float pkd = 0;
+float pkd = 0.01;
 //-------------------------
 MPU6050 accelgyro;
 int16_t ax, ay, az;
@@ -39,18 +39,21 @@ BalanbotMotor motor1;
 BalanbotMotor motor2;
 
 
-float dT = 0.01;
+float dT = 0.008;
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 void timerInterrupt(){
     sei();
     double phi = getPhi();
-    motor1.Update(phi);
     motor2.Update(phi);
+    motor1.Rotate(motor2.getEffort());
+    motor2.Rotate(motor2.getEffort());
+    //motor2.Update(phi);
     //float speed_right = motor1.GetSpeed();
     //float speed_left = motor2.GetSpeed();
     
     //BT.println(phi);
+    //BT.println(motor2.GetAngle());
     //BT.println(speed_right);
     //Serial.println(phi);
     //Serial.print(speed_right);Serial.print("\t");
@@ -88,5 +91,4 @@ void loop(){
       //Serial.println(info);
       BT.println(info);
     }
-    
 }
