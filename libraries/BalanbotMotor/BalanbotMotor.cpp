@@ -128,22 +128,11 @@ void BalanbotMotor::UpdateEncoder(){
 
 void BalanbotMotor::UpdateControl(float phi){
   float pos_out = posController.Update(mAngle);
+  Serial.println(mAngle);
   posError = pos_out;
-  Serial.print(pos_out);
-  Serial.print(" ");
-  float ang_out = angleController.Update((phi));
-  effort = (int)(ang_out-pos_out);
-
+  float ang_out = angleController.Update((phi-pos_out));
+  effort = (int)(ang_out);
   
-  /*
-  float ang_out = angleController.Update((phi));
-  effort = (int)(ang_out-pos_out);
-	effort = (effort < 250)? effort : 250;
-	effort = (effort > -250)? effort : -250;
-  */
-  //Serial.print(phi-pos_out);
-  //Serial.print(" ");
-  Rotate(effort);
 }
 
 int BalanbotMotor::getEffort(){

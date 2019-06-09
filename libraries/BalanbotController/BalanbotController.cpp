@@ -45,10 +45,6 @@ float PIDController::Update(float feedback)
 	//Serial.print(mError);
   	//Serial.print(" ");
 	
-	if(GetIfSteady()){
-		mError=0;
-		//mIntegrator.clear();
-	}
 	pEffort = mKp * mError;
 	iEffort = mKi * mIntegrator.integral(mError);
 	dEffort = mKd * mDifferentiator.differential(mError);
