@@ -144,3 +144,8 @@ void BalanbotMotor::Update(){
   UpdateAngle();
   UpdateSpeed();
 }
+
+void BalanbotMotor::reset(){
+  mEncoder.ClearPosition();
+  posController.SetReference(0);
+}

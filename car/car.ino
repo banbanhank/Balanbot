@@ -20,7 +20,7 @@ float pki = 0;
 float pkd = 0.01;
 //PID direction
 float dreference = 0;
-float dkp = 1;
+float dkp = 0.4;
 float dki = 0;
 float dkd = 0;
 //-------------------------
@@ -45,6 +45,7 @@ BalanbotMotor motor2;
 PIDController directionController;
 
 float dT = 0.008;
+float phi_ctl = 0;
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
@@ -59,7 +60,10 @@ void timerInterrupt(){
     double phi = getPhi();
     motor2.Update();
     motor1.Update();
-    motor2.UpdateControl(phi);
+    motor2.UpdateControl(phi - phi_ctl);
+    if(phi_ctl!=0){
+      motor2.reset();
+    }
     
     float speed_d = motor1.GetSpeed() - motor2.GetSpeed();
     int speed_d_out = directionController.Update(speed_d);
