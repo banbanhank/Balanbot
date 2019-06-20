@@ -115,7 +115,6 @@ void BalanbotMotor::UpdateAngle(){
             * (2*PI) 
             * ( static_cast<float>(encoderPosition) 
               / static_cast<float>(mEncoder.GetPPR()) );
-  //Serial.println(mAngle);
 }
 
 void BalanbotMotor::UpdateSpeed(){
@@ -128,11 +127,9 @@ void BalanbotMotor::UpdateEncoder(){
 
 void BalanbotMotor::UpdateControl(float phi){
   float pos_out = posController.Update(mAngle);
-  Serial.println(mAngle);
   posError = pos_out;
   float ang_out = angleController.Update((phi-pos_out));
   effort = (int)(ang_out);
-  
 }
 
 int BalanbotMotor::getEffort(){
@@ -143,8 +140,7 @@ float BalanbotMotor::getPosError(){
   return posError;
 }
 
-void BalanbotMotor::Update(float phi){
+void BalanbotMotor::Update(){
   UpdateAngle();
   UpdateSpeed();
-  UpdateControl(phi);
 }

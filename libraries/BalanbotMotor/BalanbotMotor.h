@@ -45,7 +45,7 @@ class BalanbotMotor{
     void Brake();
     void UpdateEncoder();
     void UpdateControl(float phi);
-    void Update(float phi);
+    void Update();
 
     PIDController angleController;
     PIDController posController;

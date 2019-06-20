@@ -7,19 +7,20 @@ void setupMotor(){
     int C1_A = A3 , C2_A = 2;
     int C1_B = 8 , C2_B = 3;
 
+    directionController.SetBound(100,-100);
+    directionController.SetPID(dkp,dki,dkd);
+    directionController.SetReference(dreference);
+
     motor1.SetMotorPins(PWMA,AIN1,AIN2,STBY);
     motor2.SetMotorPins(PWMB,BIN1,BIN2,STBY);
 
     motor1.InverseRotationDirectionDefinition(false);
     motor2.InverseRotationDirectionDefinition(true);
 
-    motor1.SetControllerBound(200,-200,1.75,-1.75);
     motor2.SetControllerBound(200,-200,1.75,-1.75);
 
-    motor1.SetControl(0,reference,kp,ki,kd);
     motor2.SetControl(0,reference,kp,ki,kd);
     
-    motor1.SetControl(1,preference,pkp,pki,pkd);
     motor2.SetControl(1,preference,pkp,pki,pkd);
 
 
