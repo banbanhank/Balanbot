@@ -7,7 +7,7 @@ void updateBT(){
     }  
     if(startRecieve){  
         startRecieve = false;  
-       // Serial.println(recieveData);
+        //Serial.println(recieveData);
         remoteControl(recieveData);
         recieveData = "";  
     }
@@ -16,7 +16,7 @@ void updateBT(){
 void remoteControl(String data) {
     for(int i=0;i<data.length();i++){
         if(data[i]<48 || data[i]>57){
-          if(data[i]!='r' && data[i]!='p' && data[i]!='i' && data[i]!='d' && data[i]!='e' &&  data[i]!='o' && data[i]!='u' && data[i]!='s' && data[i]!='.' && data[i]!='-')
+          if(data[i]!='r' && data[i]!='p' && data[i]!='i' && data[i]!='d' && data[i]!='e' &&  data[i]!='o' && data[i]!='u' && data[i]!='s' && data[i]!='.' && data[i]!='-' && data[i]!='L' && data[i]!='R')
             return;
         }
     }
@@ -50,10 +50,32 @@ void remoteControl(String data) {
       case 'e':
         preference = data_PID.toFloat();
         break;
+      case 'L':
+        String lstr="",rstr="";
+        bool f=true;
+        for(int i=0;i<data_PID.length();i++){
+          if(data_PID[i]!='R'){
+            if(f){
+              lstr += data_PID[i];
+            }
+            else{
+              rstr += data_PID[i];
+            }
+          }
+          else{
+            f = false;
+          }
+        }
+
+        int lj = lstr.toInt();
+        int rj = rstr.toInt();
+        preference += lj/50.0;
+        directionController.SetReference(rj/10.0);        
+        break;
     }
-    motor1.SetControl(0,reference,kp,ki,kd);
-    motor2.SetControl(0,reference,kp,ki,kd);
-    motor1.SetControl(1,preference,pkp,pki,pkd);
-    motor2.SetControl(1,preference,pkp,pki,pkd); 
+
+     motor2.SetControl(0,reference,kp,ki,kd);
+     motor2.SetControl(1,preference,pkp,pki,pkd);
+      
     
 }
