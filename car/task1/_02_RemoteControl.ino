@@ -67,10 +67,9 @@ void remoteControl(String data) {
           }
         }
 
-        int lj = lstr.toInt();
-        int rj = rstr.toInt();
-        preference += lj/50.0;
-        directionController.SetReference(rj/10.0);        
+        lj = lstr.toInt()/100.0;
+        rj = rstr.toInt();
+        directionController.SetReference(rj);        
         break;
     }
 
