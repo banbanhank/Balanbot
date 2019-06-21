@@ -15,14 +15,16 @@ float ki = 300;
 float kd = 0.35;
 //PID variable(position)
 float preference = 0;
-float pkp = 0.06;
+float pkp = 0.12;
 float pki = 0;
-float pkd = 0.01;
+float pkd = 0.03;
 //PID direction
-float dreference = 0;
-float dkp = 0.4;
+float dreference = 3.4;
+float dkp = 1;
 float dki = 0;
 float dkd = 0;
+//PID straight
+float skp = 0.015;
 //-------------------------
 MPU6050 accelgyro;
 int16_t ax, ay, az;
@@ -39,13 +41,24 @@ char val;
 String recieveData = "";   
 bool startRecieve = false;  
 //------------------------
-
 BalanbotMotor motor1;
 BalanbotMotor motor2;
 PIDController directionController;
-
+float wheel_ang = 0;
+//------------------------
 float dT = 0.008;
-float phi_ctl = 0;
+float lj = 0;
+float rj = 0;
+//------------------------
+typedef struct{
+  float pos;//-3~3
+  float ang;//-200~200
+  float goal;
+}command;
+
+int state;
+#define CMD_SIZE 3
+command cmd[CMD_SIZE];
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
@@ -60,8 +73,8 @@ void timerInterrupt(){
     double phi = getPhi();
     motor2.Update();
     motor1.Update();
-    motor2.UpdateControl(phi - phi_ctl);
-    if(phi_ctl!=0){
+    motor2.UpdateControl(phi-lj);
+    if(lj!=0 || rj!=0){
       motor2.reset();
     }
     
@@ -74,6 +87,9 @@ void timerInterrupt(){
     
     motor1.Rotate(effort1);
     motor2.Rotate(effort2);
+
+    wheel_ang = motor1.GetAngle();
+    
 }
 
 void encoder1Interrupt(){
@@ -94,19 +110,44 @@ void setup(){
     MsTimer2::set(dT*1000, timerInterrupt);
     MsTimer2::start();
     btTimer=micros();
+
+    cmd[0] = (command){1.0,0,10};
+    cmd[1] = (command){0,-90,10};
+    cmd[2] = (command){1.0,0,10};
 }
 
 void loop(){
-    updateBT();
+    //updateBT();
+
     
-    /*
+    //state machine
+    if(state<CMD_SIZE){
+      lj = cmd[state].pos;
+      rj = cmd[state].ang * 0.3;
+      directionController.SetReference(dreference + rj);
+      if(abs(wheel_ang-cmd[state].goal) < 1){
+        motor1.reset();
+        wheel_ang = 0;
+        state++;
+        lj = 0;
+        rj = 0;
+        directionController.SetReference(dreference);
+        delay(3000);
+      }
+    }
+    else{
+      lj = 0;
+      rj = 0;
+    }
+    
+    
+    
     if((micros()-btTimer) > 100000){
       btTimer = micros();
-      String info = String(kalAngleX) + ",";
-      info += String(motor1.getPosError()) + ",";
-      info += String(motor2.getPosError());
-      //Serial.println(info);
+      String info = String(state) + ",";
+      info += String(lj) + ",";
+      info += String(rj);
       BT.println(info);
     }
-    */
+    
 }

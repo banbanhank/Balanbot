@@ -67,9 +67,8 @@ void remoteControl(String data) {
           }
         }
 
-        int lj = lstr.toInt();
-        int rj = rstr.toInt();
-        phi_ctl = lj/50.0;
+        lj = lstr.toInt()/100.0;
+        rj = rstr.toInt();
         directionController.SetReference(rj);        
         break;
     }
