@@ -142,7 +142,7 @@ float BalanbotMotor::getPosError(){
 
 void BalanbotMotor::Update(){
   UpdateAngle();
-  UpdateSpeed();
+  UpdateSpeed(); 
 }
 
 void BalanbotMotor::reset(){

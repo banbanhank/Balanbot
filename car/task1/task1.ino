@@ -68,7 +68,7 @@ void timerInterrupt(){
     
     float speed_d = motor1.GetSpeed() - motor2.GetSpeed();
     int speed_d_out = directionController.Update(speed_d);
-
+    Serial.println(speed_d_out);
     int effort = motor2.getEffort();
     int effort1 = bound(effort+speed_d_out,255,-255);
     int effort2 = bound(effort-speed_d_out,255,-255);
