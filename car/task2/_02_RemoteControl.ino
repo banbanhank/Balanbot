@@ -48,7 +48,7 @@ void remoteControl(String data) {
         pkd = data_PID.toFloat();
         break;
       case 'e':
-        dreference = data_PID.toFloat();
+        preference = data_PID.toFloat();
         break;
       case 'L':
         String lstr="",rstr="";
@@ -67,25 +67,14 @@ void remoteControl(String data) {
           }
         }
 
-        //lj = lstr.toInt()*skp;
-        rj = rstr.toInt()*0.3;
-        directionController.SetReference(dreference + rj);        
+        lj = lstr.toInt()/100.0*3;
+        rj = rstr.toInt();
+        directionController.SetReference(rj);        
         break;
     }
 
-    angleController.SetPID(kp,ki,kd);
-    angleController.SetReference(reference);
-    posController.SetPID(pkp,pki,pkd);
-    posController.SetReference(preference);
+     motor2.SetControl(0,reference,kp,ki,kd);
+     motor2.SetControl(1,preference,pkp,pki,pkd);
+      
     
-}
-
-void sendInfo(){
-    if((micros()-btTimer) > 100000){
-      btTimer = micros();
-      String info = String(state) + ",";
-      info += String(" ") + ",";
-      info += String(rj);
-      BT.println(info);
-    }
 }

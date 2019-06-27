@@ -6,24 +6,23 @@
 #include <Wire.h>
 #include <Kalman.h>
 
+
 //------------------------
 //PID variable(phi)
-float reference = 1.75;
-float kp = 18;
-float ki = 300;
-float kd = 0.35;
+float reference = 0;
+float kp = 19;
+float ki = 200;
+float kd = 0.3;
 //PID variable(position)
 float preference = 0;
-float pkp = 0.12;
+float pkp = 0.09;
 float pki = 0;
 float pkd = 0.03;
 //PID direction
-float dreference = 0;//3.4
-float dkp = 1;
+float dreference = 0;
+float dkp = 0.4;
 float dki = 0;
 float dkd = 0;
-//PID straight
-float skp = 0.01;
 //-------------------------
 MPU6050 accelgyro;
 int16_t ax, ay, az;
@@ -40,31 +39,14 @@ char val;
 String recieveData = "";   
 bool startRecieve = false;  
 //------------------------
+
 BalanbotMotor motor1;
 BalanbotMotor motor2;
 PIDController directionController;
-PIDController angleController;
-PIDController posController;
-float wheel_ang1 = 0;
-float wheel_ang2 = 0;
-//------------------------
-float dT = 0.008;
-float rj = 0;
-bool pos_ctl = true;
-bool turn_ctl = false;
-//------------------------
-typedef struct{
-  bool pos;
-  bool turn;
-  float ang;
-  float goal;
-  float ang1;
-  float goal1;
-}command;
 
-int state;
-#define CMD_SIZE 7
-command cmd[CMD_SIZE];
+float dT = 0.008;
+float lj = 0;
+float rj = 0;
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
@@ -77,23 +59,25 @@ int bound(int v,int u,int d){
 void timerInterrupt(){
     sei();
     double phi = getPhi();
+    if(abs(phi) > 30){
+      motor2.SetControl(0,reference,0,0,0);
+    }
     motor2.Update();
     motor1.Update();
-    float pos_out = posController.Update(motor2.GetAngle());
-    float ang_out = angleController.Update((phi-pos_out));
-    int effort = (int)(ang_out);
     
+    if(lj!=0 || rj!=0){
+      motor2.reset();
+    }
+    motor2.UpdateControl(phi-lj);
     float speed_d = motor1.GetSpeed() - motor2.GetSpeed();
     int speed_d_out = directionController.Update(speed_d);
-    
+    Serial.println(speed_d_out);
+    int effort = motor2.getEffort();
     int effort1 = bound(effort+speed_d_out,255,-255);
     int effort2 = bound(effort-speed_d_out,255,-255);
     
     motor1.Rotate(effort1);
     motor2.Rotate(effort2);
-
-    wheel_ang1 = motor1.GetAngle();
-    wheel_ang2 = motor2.GetAngle();
 }
 
 void encoder1Interrupt(){
@@ -114,78 +98,9 @@ void setup(){
     MsTimer2::set(dT*1000, timerInterrupt);
     MsTimer2::start();
     btTimer=micros();
-
-    cmd[0] = (command){true,false,0.6,10,0,0};
-    
-    cmd[1] = (command){false,true,-70,7,0,0};
-    
-    cmd[2] = (command){true,false,0.6,10,0,0};
-    
-    cmd[3] = (command){false,true,-70,7,0,0};
-    
-    cmd[4] = (command){true,false,0.6,10,0,0};
-    
-    cmd[5] = (command){false,true,60,-18,0,0};
-    
-    cmd[6] = (command){true,true,0.6,30,5,-7};
 }
 
 void loop(){
-    //updateBT();
-    //sendInfo();
-    stateMachine();
-}
-
-void stateMachine(){
-  if(state<CMD_SIZE){
-      pos_ctl = cmd[state].pos;
-      turn_ctl = cmd[state].turn;
-      if(pos_ctl && !turn_ctl){
-        posController.SetReference(cmd[state].goal);
-        float bound = cmd[state].ang;
-        posController.SetBound(bound,-bound);
-      }
-      else if(!pos_ctl && turn_ctl){
-        posController.SetPID(0,0,0);
-        rj = cmd[state].ang * 0.4;
-        directionController.SetReference(dreference + rj);
-      }
-      else{
-        posController.SetReference(cmd[state].goal);
-        float bound = cmd[state].ang;
-        posController.SetBound(bound,-bound);
-        rj = cmd[state].ang1 * 0.4;
-        directionController.SetReference(dreference + rj);
-      }
-      
-      if(next_state()){
-        pause();
-        state++;
-        delay(3000);
-      }
-  }
-}
-
-void pause(){
-  motor1.reset();
-  motor2.reset();
-  posController.SetReference(0);
-  posController.SetPID(pkp,pki,pkd);
-  wheel_ang2 = 0;
-  rj = 0;
-  directionController.SetReference(dreference);
-}
-
-bool next_state(){
-  bool next;
-  if(pos_ctl && !turn_ctl){
-    next = abs(wheel_ang2-cmd[state].goal) < 1;
-  }
-  else if(!pos_ctl && turn_ctl){
-    next = abs(wheel_ang1-wheel_ang2-cmd[state].goal) < 1;
-  }else{
-    next = (abs(wheel_ang2-cmd[state].goal)<1);
-  }
-
-  return next;
+    updateBT();
+    
 }
