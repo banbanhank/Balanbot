@@ -16,7 +16,7 @@ class CameraNode(object):
         rospy.loginfo("[%s] Initializing......" %(self.node_name))
         # TODO: load parameters
 
-        self.framerate = self.setupParam("~framerate",60.0)
+        self.framerate = self.setupParam("~framerate",15.0)
         #self.res_w = self.setupParam("~res_w",320)
         #self.res_h = self.setupParam("~res_h",200)
 

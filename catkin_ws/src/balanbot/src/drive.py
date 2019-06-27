@@ -2,15 +2,18 @@
 
 import rospy
 import serial
-from balanbot.msg import Motor_cmd
+from balanbot.msg import Motor_cmd, Detect
 
 class Driver:
     def __init__(self):
         self.ser=serial.Serial("/dev/usb_arduino", 57600)
-        self.sub = rospy.Subscriber('/motor_cmd',Motor_cmd,self.cb_cmd,queue_size=1)
-        
+        self.sub = rospy.Subscriber('/detection',Detect,self.cb_cmd,queue_size=1)
+            
+
     def cb_cmd(self,msg):
-        self.ser.write(str(msg.lj)+','+str(msg.rj)+'\n')
+        cmd = str(msg.shape)+','+str(msg.color)+'\n'
+        self.ser.write(cmd)
+        print(cmd)
 
     def on_shutdown(self):
         self.ser.close()

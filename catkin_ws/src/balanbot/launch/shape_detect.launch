@@ -1,4 +1,5 @@
 <launch>
     <include file='$(find pi_camera)/launch/camera_node.launch' />
     <node pkg='balanbot' type='detection.py' name='detector' output='screen' />
+    <node pkg='balanbot' type='drive.py' name='driver' output='screen' />
 </launch>
