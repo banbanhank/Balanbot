@@ -8,15 +8,15 @@
 
 //------------------------
 //PID variable(phi)
-float reference = 0.03;
-float kp = 16;
-float ki = 240;
+float reference = -0.04;
+float kp = 21;
+float ki = 295;
 float kd = 0.35;
 //PID variable(position)
 float preference = 0;
-float pkp = 0.134;
+float pkp = 0.8;
 float pki = 0;
-float pkd = 0.034;
+float pkd = 0.06;
 //PID direction
 float dreference = 0;//3.4
 float dkp = 1;
@@ -52,8 +52,8 @@ float dT = 0.008;
 float rj = 0;
 bool pos_ctl = true;
 bool turn_ctl = false;
-float nextstate_ctl = 1.0;
-int delaytime;
+int color=0;
+int shape=0;
 //------------------------
 typedef struct{
   bool pos;
@@ -62,12 +62,16 @@ typedef struct{
   float goal;
   float ang1;
   float goal1;
-  float err;
-  int set_delay;
+  bool stop_car;
+  int delaytime;
 }command;
 
-int state;
-#define CMD_SIZE 9
+int state = 0;
+int index = 0;
+int set_delay;
+int lj = 0.1;
+bool stop_car;
+#define CMD_SIZE 18
 command cmd[CMD_SIZE];
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -81,11 +85,10 @@ int bound(int v,int u,int d){
 void timerInterrupt(){
     sei();
     double phi = getPhi();
-    Serial.println(phi);
     motor2.Update();
     motor1.Update();
-    float pos_out = posController.Update(motor2.GetAngle());
-    float ang_out = angleController.Update((phi-pos_out));
+    //float pos_out = posController.Update(motor2.GetAngle());
+    float ang_out = angleController.Update(phi-lj);
     int effort = (int)(ang_out);
     
     float speed_d = motor1.GetSpeed() - motor2.GetSpeed();
@@ -119,72 +122,106 @@ void setup(){
     MsTimer2::set(dT*1000, timerInterrupt);
     MsTimer2::start();
     btTimer=micros();
-    int index = 0;
-    cmd[index] = (command){true,false,1.3,33,0,0,5.5,1};//1~2
-    index++;
-    cmd[index] = (command){false,true,-65,8,0,0,1,1};//turn left
-    index++;
-    cmd[index] = (command){true,false,1.3,29,0,0,5.2,1};//2~3
-    index++;
-    cmd[index] = (command){false,true,-65,7.5,0,0,1,1};//turn left
-    index++;
-    cmd[index] = (command){true,false,1.3,33,0,0,5,1};//3~4
-    index++;
-    cmd[index] = (command){false,true,70,-18,0,0,1,1};//turn right 180
-    index++;
-    cmd[index] = (command){true,true,1.25,63,9.98,-9,15,1};//4~5
-    index++;
-    cmd[index] = (command){false,true,70,-10,0,0,1,1};//turn right 90
-    index++;
-    cmd[index] = (command){true,true,1.25,24,16,-7,1,1};//5~6
+
+    cmd[0] = (command){true,false,1.5,3,0,0,false,1000};
+    
 }
 
 void loop(){
+    String cmd;
+    while(Serial.available()){
+      char c = Serial.read();
+      cmd += c;
+    }
+    if(cmd.length()==4){
+      shape = cmd[0]-48;
+      color = cmd[2]-48;
+    }
+    
+    
+    if(shape == 0){
+      if(state%500==0)  lj = 0;
+      else lj = 1;
+    }else if(shape == 3){
+      lj = 0;
+      directionController.SetPID(dkp,dki,dkd);
+      directionController.SetReference(dreference - 28);
+      delay(1300);
+      directionController.SetPID(0,0,0);
+      shape = 0;
+    }else if(shape == 4){
+      lj = 0;
+      directionController.SetPID(dkp,dki,dkd);
+      directionController.SetReference(dreference + 28);
+      delay(1200);
+      directionController.SetPID(0,0,0);
+      shape = 0;
+    }else if(shape == 5){
+      angleController.SetPID(0,0,0);
+      directionController.SetPID(0,0,0);
+    }
+
+    state++;
+    
+    
     //updateBT();
     //sendInfo();
-    stateMachine();
+    //stateMachine();
 }
 
 void stateMachine(){
   if(state<CMD_SIZE){
       pos_ctl = cmd[state].pos;
       turn_ctl = cmd[state].turn;
-      nextstate_ctl = cmd[state].err;//nextstate error
-      delaytime = cmd[state].set_delay;
+      set_delay = cmd[state].delaytime;
+      stop_car = cmd[state].stop_car;
+      if(stop_car){
+        angleController.SetPID(0,0,0);
+      }
       if(pos_ctl && !turn_ctl){
-        posController.SetReference(cmd[state].goal);
-        float bound = cmd[state].ang;
-        posController.SetBound(bound,-bound);
+        index++;
+        if(index%500==0) lj=0;
+        else lj = 1;
         directionController.SetPID(0,0,0);
       }
       else if(!pos_ctl && turn_ctl){
-        posController.SetPID(0,0,0);
+        directionController.SetPID(dkp,dki,dkd);
+        lj = 0;
         rj = cmd[state].ang * 0.4;
         directionController.SetReference(dreference + rj);
+        shape = 0;
       }
-      else{
-        posController.SetReference(cmd[state].goal);
-        float bound = cmd[state].ang;
-        posController.SetBound(bound,-bound);
-        rj = cmd[state].ang1 * 0.4;
-        directionController.SetReference(dreference + rj);
-      }
+      
       
       if(next_state()){
         pause();
-        delay(delaytime);
-        state++;
+        delay(set_delay);
+        state+=1;
+        state = state%CMD_SIZE;
+        command next_cmd;
+        switch(shape){
+          case 0:
+            next_cmd = (command){true,false,1.5,2,0,0,false,1};
+            break;
+          case 3:
+            next_cmd = (command){false,true,-70,7,0,0,false,500};
+            break;
+          case 4:
+            next_cmd = (command){false,true,70,-10,0,0,false,500};
+            break;
+          case 5:
+            next_cmd = (command){false,false,0,0,0,0,true,5000};
+            break;
+        };
+        cmd[state] = next_cmd;
         
-      }
+     }
   }
 }
 
 void pause(){
   motor1.reset();
   motor2.reset();
-  posController.SetReference(0);
-  posController.SetPID(pkp,pki,pkd);
-  directionController.SetPID(dkp,dki,dkd);
   wheel_ang2 = 0;
   rj = 0;
   directionController.SetReference(dreference);
@@ -193,12 +230,10 @@ void pause(){
 bool next_state(){
   bool next;
   if(pos_ctl && !turn_ctl){
-    next = abs(wheel_ang2-cmd[state].goal) < nextstate_ctl;
+    next = true;
   }
   else if(!pos_ctl && turn_ctl){
-    next = abs(wheel_ang1-wheel_ang2-cmd[state].goal) < nextstate_ctl;
-  }else{
-    next = (abs(wheel_ang2-cmd[state].goal)<nextstate_ctl);
+    next = abs(wheel_ang1-wheel_ang2-cmd[state].goal) < 1;
   }
 
   return next;

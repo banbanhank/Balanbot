@@ -84,8 +84,8 @@ void sendInfo(){
     if((micros()-btTimer) > 100000){
       btTimer = micros();
       String info = String(state) + ",";
-      info += String(" ") + ",";
-      info += String(rj);
+      info += String(shape) + ",";
+      info += String(color);
       BT.println(info);
     }
 }
