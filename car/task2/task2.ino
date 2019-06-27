@@ -103,14 +103,4 @@ void setup(){
 void loop(){
     updateBT();
     
-    /*
-    if((micros()-btTimer) > 100000){
-      btTimer = micros();
-      String info = String(kalAngleX) + ",";
-      info += String(motor1.getPosError()) + ",";
-      info += String(motor2.getPosError());
-      //Serial.println(info);
-      BT.println(info);
-    }
-    */
 }

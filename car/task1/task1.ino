@@ -81,7 +81,7 @@ int bound(int v,int u,int d){
 void timerInterrupt(){
     sei();
     double phi = getPhi();
-  Serial.println(phi);
+    Serial.println(phi);
     motor2.Update();
     motor1.Update();
     float pos_out = posController.Update(motor2.GetAngle());
