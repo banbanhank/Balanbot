@@ -17,12 +17,12 @@ void setupMPU6050()
         while (1);
     }
     
-    accelgyro.setXAccelOffset(-2793);
-    accelgyro.setYAccelOffset(303);
-    accelgyro.setZAccelOffset(831);
-    accelgyro.setXGyroOffset(79);
-    accelgyro.setYGyroOffset(-919);
-    accelgyro.setZGyroOffset(39);
+    accelgyro.setXAccelOffset(-4375);
+    accelgyro.setYAccelOffset(-1906);
+    accelgyro.setZAccelOffset(1326);
+    accelgyro.setXGyroOffset(21);
+    accelgyro.setYGyroOffset(-51);
+    accelgyro.setZGyroOffset(43);
     
     delay(100); // Wait for sensor to stabilize
 
